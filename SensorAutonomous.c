@@ -42,23 +42,23 @@
 #include "C:\Program Files (x86)\Robomatter Inc\ROBOTC Development Environment\Sample Programs\NXT\3rd Party Sensor Drivers\drivers\hitechnic-irseeker-v2.h"
 
 // global variables
-long nNumbCyles;
-long nInits = 0;
-string sTextLines[8];
+ long nNumbCyles;
+ long nInits = 0;
+ string sTextLines[8];
 
 // function prototypes
-void displayText(int nLineNumber, const string cChar, int nValueDC, int nValueAC);
-void displayInstructions();
+ void displayText(int nLineNumber, const string cChar, int nValueDC, int nValueAC);
+ void displayInstructions();
 
 // main task
-task main ()
-{
+ task main ()
+ {
   int last = 0;
   int stage = 1;
   int _dirDC = 0;
   int _dirAC = 0;
-        int dcS1, dcS2, dcS3, dcS4, dcS5 = 0;
-        int acS1, acS2, acS3, acS4, acS5 = 0;
+  int dcS1, dcS2, dcS3, dcS4, dcS5 = 0;
+  int acS1, acS2, acS3, acS4, acS5 = 0;
 
         // the default DSP mode is 1200 Hz.
   tHTIRS2DSPMode _mode = DSP_1200;
@@ -73,19 +73,19 @@ task main ()
     PlaySound(soundBeepBeep);
     while(bSoundActive)
     {}
-    eraseDisplay();
-    nNumbCyles = 0;
-    ++nInits;
-    while (true)
-    {
-      if ((nNumbCyles & 0x04) == 0)
-        nxtDisplayTextLine(0, "Initializing...");
-      else
-        nxtDisplayTextLine(0, "");
-      nxtDisplayCenteredBigTextLine(1, "IR Seekr");
+  eraseDisplay();
+  nNumbCyles = 0;
+  ++nInits;
+  while (true)
+  {
+    if ((nNumbCyles & 0x04) == 0)
+      nxtDisplayTextLine(0, "Initializing...");
+    else
+      nxtDisplayTextLine(0, "");
+    nxtDisplayCenteredBigTextLine(1, "IR Seekr");
 
       // set the DSP to the new mode
-      if (HTIRS2setDSPMode(HTIRS2, _mode))
+    if (HTIRS2setDSPMode(HTIRS2, _mode))
         break; // Sensor initialized
 
       ++nNumbCyles;
@@ -181,55 +181,52 @@ task main ()
       while(stage == 1){
       	int acS1, acS2, acS3, acS4, acS5 = 0;
       	HTIRS2readAllACStrength(HTIRS2, acS1, acS2, acS3, acS4, acS5 );
-	      if(acS1 > acS2-100&&last>10){
+        if(acS1 > acS2-100&&last>10){
 
-	        motor[driveL]= motor[driveL2] = motor[driveR] = motor[driveR2] = -20;
+         motor[driveL]= motor[driveL2] = motor[driveR] = motor[driveR2] = -20;
 
-	        last = -1;
-	        stage = 2;
-	        wait1Msec(1000);
-	        motor[driveL]= motor[driveL2] = motor[driveR] = motor[driveR2] = 0;
-	      }
-	      else{
-	        if(last<acS1)
-	        	last = acS1;
-	      	int speed = 90-3*(acS2 + acS3);
-	      	if (speed < 9) speed = 9;
-	        motor[driveL]= motor[driveL2] = motor[driveR] = motor[driveR2] = speed;
-	      }
+         last = -1;
+         stage = 2;
+         wait1Msec(1000);
+         motor[driveL]= motor[driveL2] = motor[driveR] = motor[driveR2] = 0;
+       }
+       else{
+        if(last<acS1)
+          last = acS1;
+        int speed = 90-3*(acS2 + acS3);
+        if (speed < 9) speed = 9;
+        motor[driveL]= motor[driveL2] = motor[driveR] = motor[driveR2] = speed;
       }
-      while(stage == 2){
+    }
+    while(stage == 2){
 	        //Right
 	        //stage_done = 1;
-      		HTIRS2readAllACStrength(HTIRS2, acS1, acS2, acS3, acS4, acS5);
-	        int speed = 20-acS3;
-	        if(speed < 9) speed = 9;
-	        motor[DFR] = -speed;
-	        motor[DFL]= speed;
-	        motor[DBR] = -speed;
-	        motor[DBL]= speed;
+      HTIRS2readAllACStrength(HTIRS2, acS1, acS2, acS3, acS4, acS5);
+      int speed = 20-acS3;
+      if(speed < 9) speed = 9;
+      motor[DFR] = -speed;
+      motor[DFL]= speed;
+      motor[DBR] = -speed;
+      motor[DBL]= speed;
 
-	      if(acS3>last)
-	        last = acS3;
-	      if(last-acS3 > 1&&last!=0){
+      if(acS3>last)
+       last = acS3;
+     if(last-acS3 > 1&&last!=0){
 
-          motor[DFR] = 0;
-	        motor[DFL]= 0;
-	        motor[DBR] = 0;
-	        motor[DBL]= 0;
-	        stage = 3;
-	        wait1Msec(1000);
-        }
+      motor[DFR] = 0;
+      motor[DFL]= 0;
+      motor[DBR] = 0;
+      motor[DBL]= 0;
+      stage = 3;
+      wait1Msec(1000);
+    }
        // nxtDisplayTextLine(0, "Last: "+last);
        // nxtDisplayTextLine(1, "acS3: "+dcS3);
-        wait1Msec(500);
+    wait1Msec(500);
 
-      }
-
-
-
-    }
   }
+}
+}
 }
 
 // Display the instructions to the user

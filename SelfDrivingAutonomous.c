@@ -28,7 +28,7 @@ int SpinFor = 500; //Turn time
 void displayText(int nLineNumber, const string cChar, int nValueDC, int nValueAC);
 void displayInstructions();
 
-// main task
+  // main task
 task main ()
 {
   int last = 0;
@@ -36,8 +36,8 @@ task main ()
   int stage = 1;
   int _dirDC = 0;
   int _dirAC = 0;
-        int lacS1, lacS2, lacS3, lacS4, lacS5 = 0;
-        int acS1, acS2, acS3, acS4, acS5 = 0;
+  int lacS1, lacS2, lacS3, lacS4, lacS5 = 0;
+  int acS1, acS2, acS3, acS4, acS5 = 0;
 
         // the default DSP mode is 1200 Hz.
   tHTIRS2DSPMode _mode = DSP_1200;
@@ -52,19 +52,19 @@ task main ()
     PlaySound(soundBeepBeep);
     while(bSoundActive)
     {}
-    eraseDisplay();
-    nNumbCyles = 0;
-    ++nInits;
-    while (true)
-    {
-      if ((nNumbCyles & 0x04) == 0)
-        nxtDisplayTextLine(0, "Initializing...");
-      else
-        nxtDisplayTextLine(0, "");
-      nxtDisplayCenteredBigTextLine(1, "IR Seekr");
+  eraseDisplay();
+  nNumbCyles = 0;
+  ++nInits;
+  while (true)
+  {
+    if ((nNumbCyles & 0x04) == 0)
+      nxtDisplayTextLine(0, "Initializing...");
+    else
+      nxtDisplayTextLine(0, "");
+    nxtDisplayCenteredBigTextLine(1, "IR Seekr");
 
       // set the DSP to the new mode
-      if (HTIRS2setDSPMode(HTIRS2, _mode))
+    if (HTIRS2setDSPMode(HTIRS2, _mode))
         break; // Sensor initialized
 
       ++nNumbCyles;
@@ -120,86 +120,86 @@ task main ()
       	servo[binlift] = 110;
       	//Drive until sensor reports a drop, then backwards for a few milliseconds
       	if(flags >= 3){
-	        last = 0;
-	        stage = 2;
-	        flags = 0;
+         last = 0;
+         stage = 2;
+         flags = 0;
 	        //motor[driveL]= motor[driveL2] = motor[driveR] = motor[driveR2] = -20;
 	        //wait1Msec(GoBackFor);
 	        //motor[driveL]= motor[driveL2] = motor[driveR] = motor[driveR2] = 0;
-	      }
-	      else{
-	        if(acS3<last){
-	        	flags += 1;
-	        	writeDebugStream("%d\n",acS3);
-	        	motor[driveL]= motor[driveL2] = motor[driveR] = motor[driveR2] = 0;
-	        	wait1Msec(500);
+       }
+       else{
+         if(acS3<last){
+          flags += 1;
+          writeDebugStream("%d\n",acS3);
+          motor[driveL]= motor[driveL2] = motor[driveR] = motor[driveR2] = 0;
+          wait1Msec(500);
 
-	        }
-	        else{
-	        	flags = 0;
-	        	last = acS3;
-	        }
-	      	int speed = 90-(acS2 + acS3);
-	      	if (speed < 9) speed = 9;
-	        motor[driveL]= motor[driveL2] = motor[driveR] = motor[driveR2] = speed;
-	      }
-    	}
-    	else if(stage == 2){
+        }
+        else{
+          flags = 0;
+          last = acS3;
+        }
+        int speed = 90-(acS2 + acS3);
+        if (speed < 9) speed = 9;
+        motor[driveL]= motor[driveL2] = motor[driveR] = motor[driveR2] = speed;
+      }
+    }
+    else if(stage == 2){
     		//Turn around
-    		motor[driveL] = motor[driveL2] = -20;
-    		motor[driveR] = motor[driveR2] = 20;
-    		if(lacS3>last||lacS3==last){
-    			last = lacS3;
-    		}
-    		else{
-    			flags+=1;
-    		}
-	      if(flags > 3){
-	      	motor[driveL] = motor[driveL2] = -20;
-    			motor[driveR] = motor[driveR2] = 20;
-    			wait1Msec(40);
-    			motor[driveL] = motor[driveL2] = 0;
-    			motor[driveR] = motor[driveR2] = 0;
-	      	motor[driveL]= motor[driveL2] = motor[driveR] = motor[driveR2] = 0;
-    			stage = 3;
-    		}
-    	}
-    	else if(stage == 3){
-    		 //Self drive until sensors spaz
-    		motor[arm]= 90;
-    		wait1Msec(1000);
-    		motor[arm] = 0;
-    		motor[driveL]= motor[driveL2] = motor[driveR] = motor[driveR2] = 100;
-    		wait1Msec(3000);
-    		motor[driveL]= motor[driveL2] = motor[driveR] = motor[driveR2] = 0;
-
-    		stage = 4;
-
-    	}
-    	else if(stage == 4){
-    		motor[arm] = -20;
-    		wait1Msec(500);
-    		motor[arm] = 0;
-    		servo[binlift]=0;
-
-    		motor[driveL]= motor[driveL2] = motor[driveR] = motor[driveR2] = -50;
-    		wait1Msec(1500);
-    		motor[driveL]= motor[driveL2] = motor[driveR] = motor[driveR2] = 0;
-
-    		stage = 5;
-
-
- 			}
- 			else if(stage == 5){
- 				if(SensorValue(touchSensor) == 0){
- 					motor[arm] = -20;
- 				}
- 				else{
- 					motor[arm] = 0;
- 				}
- 			}
-		}
+      motor[driveL] = motor[driveL2] = -20;
+      motor[driveR] = motor[driveR2] = 20;
+      if(lacS3>last||lacS3==last){
+       last = lacS3;
+     }
+     else{
+       flags+=1;
+     }
+     if(flags > 3){
+      motor[driveL] = motor[driveL2] = -20;
+      motor[driveR] = motor[driveR2] = 20;
+      wait1Msec(40);
+      motor[driveL] = motor[driveL2] = 0;
+      motor[driveR] = motor[driveR2] = 0;
+      motor[driveL]= motor[driveL2] = motor[driveR] = motor[driveR2] = 0;
+      stage = 3;
+    }
   }
+  else if(stage == 3){
+    //Self drive until sensors spaz
+    motor[arm]= 90;
+    wait1Msec(1000);
+    motor[arm] = 0;
+    motor[driveL]= motor[driveL2] = motor[driveR] = motor[driveR2] = 100;
+    wait1Msec(3000);
+    motor[driveL]= motor[driveL2] = motor[driveR] = motor[driveR2] = 0;
+
+    stage = 4;
+
+  }
+  else if(stage == 4){
+    motor[arm] = -20;
+    wait1Msec(500);
+    motor[arm] = 0;
+    servo[binlift]=0;
+
+    motor[driveL]= motor[driveL2] = motor[driveR] = motor[driveR2] = -50;
+    wait1Msec(1500);
+    motor[driveL]= motor[driveL2] = motor[driveR] = motor[driveR2] = 0;
+
+    stage = 5;
+
+
+  }
+  else if(stage == 5){
+   if(SensorValue(touchSensor) == 0){
+    motor[arm] = -20;
+  }
+  else{
+    motor[arm] = 0;
+  }
+}
+}
+}
 }
 
 // Display the instructions to the user
