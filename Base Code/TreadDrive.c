@@ -124,13 +124,14 @@ task main(){
           {
               speed = 100;
           }
-          if(SensorValue(touchSensor) == 0){
 
+          if(SensorValue(touchSensor) == 0||speed>0){
+						 motor[arm] = speed;
  					}
  					else{
- 						speed = 0;
+ 						 motor[arm] = 0;
  					}
-          motor[arm] = speed;
+
 
           //servo[binlift] = 0;
           if(tick > 20){
