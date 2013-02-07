@@ -42,9 +42,6 @@ task main(){
 	int tick = 0;
 	int bin = 255;
 	//servo[binlift] = 30;
-	const tSensors kColorSensorPort   = S2;	// We want the color sensor to be on port "S2"
-
-  SensorType[kColorSensorPort] = sensorI2CHiTechnicColor; // Configure the sensor
 	while(true)
 	{
 		tick++;
@@ -133,6 +130,10 @@ task main(){
               speed = 100;
           }
 
+          const tSensors kColorSensorPort   = S2;	// We want the color sensor to be on port "S2"
+
+  				SensorType[liftheight] = sensorI2CHiTechnicColor; // Configure the sensor
+
   				int nRed;
     			int nGreen;
     			int nBlue;
@@ -142,10 +143,6 @@ task main(){
 			    nxtDisplayTextLine(3, "Red:    %d",  nRed);
 			    nxtDisplayTextLine(4, "Green:  %d",  nGreen);
 			    nxtDisplayTextLine(5, "Blue:   %d",  nBlue);
-
-			    if(nRed > nGreen&nRed>nBlue){
-			    	speed = 0;
-			  	}
 
           motor[arm] = speed;
 
