@@ -81,76 +81,76 @@ task main(){
 
        	if (joy1Btn(3))
          {
-          	left = -100;
-          	right = -100;
+           left = -100;
+           right = -100;
 
-          }
+         }
 
-       	motor[driveL] = left;
-       	motor[driveL2] = left;
+         motor[driveL] = left;
+         motor[driveL2] = left;
 
-       	motor[driveR] = right;
-       	motor[driveR2] = right;
-
-
+         motor[driveR] = right;
+         motor[driveR2] = right;
 
 
-					int speed = 0;
 
-					if (joy1Btn(1))
-          {
+
+         int speed = 0;
+
+         if (joy1Btn(1))
+         {
           	//int escape = 0;
           	//servo[binlift2] = 139;
-          	servo[binlift] = 120;
-          	bin = 120;
+           servo[binlift] = 120;
+           bin = 120;
           	//motor[arm] = -50;
           	//wait1Msec(200);
           	//motor[arm]= 0;
-          }
-          if (joy1Btn(2))
-          {
-          	servo[binlift] = 161;
-          	bin = 161;
+         }
+         if (joy1Btn(2))
+         {
+           servo[binlift] = 161;
+           bin = 161;
 
-          }
+         }
 
 
 
-          if (joy1Btn(8))
-          {
-              speed = -100;
-          }
-          else if (joy1Btn(6))
-          {
-              speed = 100;
-          }
+         if (joy1Btn(8))
+         {
+          speed = -100;
+        }
+        else if (joy1Btn(6))
+        {
+          speed = 100;
+        }
 
-          if(SensorValue(touchSensor) == 0||speed>0){
-						 motor[arm] = speed;
- 					}
- 					else{
- 						 motor[arm] = 0;
- 					}
+        if(SensorValue(touchSensor) == 0||speed>0){
+         motor[arm] = speed;
+       }
+       else{
+        motor[arm] = 0;
+      }
 
 
           //servo[binlift] = 0;
-          if(tick > 20){
-	          if (joy1Btn(5))
-	          {
+      if(tick > 20){
+       if (joy1Btn(5))
+       {
 
-	          	bin++;
+        bin++;
 
-	          }
-	          else if (joy1Btn(7))
-	          {
-	          	bin--;
-	          }
-	          if(bin>200) bin = 200;
-	          if(bin<30) bin = 30;
-	          tick=0;
-        	}
-        	nxtDisplayTextLine(0,"This is one %d",bin);
-          servo[binlift] = bin;
+      }
+      else if (joy1Btn(7))
+      {
+        bin--;
+      }
+      if(bin>200) bin = 200;
+      if(bin<30) bin = 30;
+      tick=0;
+    }
+    nxtDisplayTextLine(0,"This is one %d",bin);
+    servo[binlift] = bin;
           //servo[binlift2] = bin;
-  	}
+  }
 }
