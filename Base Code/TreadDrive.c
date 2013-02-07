@@ -1,5 +1,6 @@
 #pragma config(Hubs,  S1, HTMotor,  HTMotor,  HTServo,  HTMotor)
 #pragma config(Sensor, S1,     ,               sensorI2CMuxController)
+#pragma config(Sensor, S4,     touchSensor,         sensorTouch)
 #pragma config(Motor,  mtr_S1_C1_1,     arm,           tmotorTetrix, openLoop)
 #pragma config(Motor,  mtr_S1_C1_2,     motorE,        tmotorTetrix, openLoop)
 #pragma config(Motor,  mtr_S1_C2_1,     driveR,        tmotorTetrix, openLoop)
@@ -123,6 +124,12 @@ task main(){
           {
               speed = 100;
           }
+          if(SensorValue(touchSensor) == 0){
+
+ 					}
+ 					else{
+ 						speed = 0;
+ 					}
           motor[arm] = speed;
 
           //servo[binlift] = 0;
