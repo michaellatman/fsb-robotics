@@ -89,6 +89,7 @@ task main ()
     else
       nxtDisplayTextLine(0, "      DC   600");
 
+    waitForStart();
     while (true)
     {
       // Read the current non modulated signal direction
