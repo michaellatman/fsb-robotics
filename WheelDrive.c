@@ -61,7 +61,15 @@ task main(){
        	float twox = joystick.joy1_x2;
        	float twoy = joystick.joy1_y2;
 
+				int nRed;
+    		int nGreen;
+    		int nBlue;
 
+			  getRGB(kColorSensorPort, nRed, nGreen, nBlue);
+			  nxtDisplayTextLine(2, "Color:  %d",  (short) SensorValue[kColorSensorPort]);
+			  nxtDisplayTextLine(3, "Red:    %d",  nRed);
+			  nxtDisplayTextLine(4, "Green:  %d",  nGreen);
+			  nxtDisplayTextLine(5, "Blue:   %d",  nBlue);
 
 
        	if(abs(onex)<6)onex=0;
@@ -96,8 +104,28 @@ task main(){
           {
           	//int escape = 0;
           	//servo[binlift2] = 139;
-          	servo[binlift] = 135;
-          	bin = 135;
+
+
+          	while(nRed < nGreen&&nRed<nBlue||nGreen > 155||nRed == 255){
+          		getRGB(kColorSensorPort, nRed, nGreen, nBlue);
+			    		motor[arm] = -100;
+			  		}
+			  		motor[arm] = 0;
+			  		servo[binlift] = 119;
+          	bin = 119;
+          	motor[driveL] = motor[driveR] = 100;
+          	wait1Msec(500);
+          	motor[driveL] = motor[driveR] = 0;
+
+
+          	motor[arm] = 100;
+          	wait1Msec(700);
+          	motor[arm] = 0;
+
+          	motor[driveL] = motor[driveR] = -100;
+          	wait1Msec(1000);
+          	motor[driveL] = motor[driveR] = 0;
+
           	//motor[arm] = -50;
           	//wait1Msec(200);
           	//motor[arm]= 0;
@@ -133,17 +161,9 @@ task main(){
               speed = 100;
           }
 
-  				int nRed;
-    			int nGreen;
-    			int nBlue;
 
-			    getRGB(kColorSensorPort, nRed, nGreen, nBlue);
-			    nxtDisplayTextLine(2, "Color:  %d",  (short) SensorValue[kColorSensorPort]);
-			    nxtDisplayTextLine(3, "Red:    %d",  nRed);
-			    nxtDisplayTextLine(4, "Green:  %d",  nGreen);
-			    nxtDisplayTextLine(5, "Blue:   %d",  nBlue);
 
-			    if(nRed > nGreen&nRed>nBlue){
+			    if(nRed > nGreen&nRed>nBlue&&speed<0){
 			    	speed = 0;
 			  	}
 
@@ -154,12 +174,12 @@ task main(){
 	          if (joy1Btn(5))
 	          {
 
-	          	bin--;
+	          	bin++;
 
 	          }
 	          else if (joy1Btn(7))
 	          {
-	          	bin++;
+	          	bin--;
 	          }
 	          if(bin>200) bin = 200;
 	          if(bin<30) bin = 30;
