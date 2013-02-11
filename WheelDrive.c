@@ -113,18 +113,7 @@ task main(){
 			  		motor[arm] = 0;
 			  		servo[binlift] = 119;
           	bin = 119;
-          	motor[driveL] = motor[driveR] = 100;
-          	wait1Msec(500);
-          	motor[driveL] = motor[driveR] = 0;
 
-
-          	motor[arm] = 100;
-          	wait1Msec(700);
-          	motor[arm] = 0;
-
-          	motor[driveL] = motor[driveR] = -100;
-          	wait1Msec(1000);
-          	motor[driveL] = motor[driveR] = 0;
 
           	//motor[arm] = -50;
           	//wait1Msec(200);
@@ -170,7 +159,7 @@ task main(){
           motor[arm] = speed;
 
           //servo[binlift] = 0;
-          if(tick > 20){
+          if(tick > 10){
 	          if (joy1Btn(5))
 	          {
 

@@ -126,7 +126,6 @@ task main ()
       //nxtDisplayCenteredTextLine(7, "Stage %@",stage);
       //printf("Hello");
       if(stage == 1){
-				servo[armrelease] = 255;
       	servo[binlift] = 110;
       	//Drive until sensor reports a drop, then backwards for a few milliseconds
       	if(flags >= 3){
