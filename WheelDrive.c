@@ -84,11 +84,17 @@ task main(){
        	int left;
        	int right;
 
-       	left = oney/2;
-       	right = oney/2;
+       	float divide;
+       	divide = 2;
+       	if (joy1Btn(2))
+        {
+        	divide = .1;
+        }
+       	left = oney/divide;
+       	right = oney/divide;
 
-       	left+= twox/2.5;
-       	right-=twox/2.5;
+       	left+= twox/(divide);
+       	right-=twox/(divide);
 
        	motor[driveL] = left;
 
