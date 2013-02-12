@@ -161,6 +161,9 @@ task main(){
 			    if((nRed > nGreen&&nRed>nBlue)&&speed<0&&nGreen!=255){
 			    	speed = 0;
 			  	}
+			  	else if((nGreen > nRed&&nGreen>nBlue)&&speed>0&&nBlue!=255){
+			    	speed = 0;
+			  	}
 
           motor[arm] = speed;
 
