@@ -121,7 +121,6 @@ task main ()
       displayText(4, "3", lacS3, acS3);
       displayText(5, "4", lacS4, acS4);
       displayText(6, "5", lacS5, acS5);
-      displayText(7, "Stage", stage, 0);
 
       //nxtDisplayCenteredTextLine(7, "Stage %@",stage);
       //printf("Hello");
