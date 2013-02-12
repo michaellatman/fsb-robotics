@@ -158,14 +158,14 @@ task main(){
 
 
 
-			    if(nRed > nGreen&nRed>nBlue&&speed<0){
+			    if((nRed > nGreen&&nRed>nBlue)&&speed<0&&nGreen!=255){
 			    	speed = 0;
 			  	}
 
           motor[arm] = speed;
 
           //servo[binlift] = 0;
-          if(tick > 10){
+          if(tick > 7){
 	          if (joy1Btn(5))
 	          {
 
