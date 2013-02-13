@@ -18,7 +18,7 @@
 	#define max( a, b ) ( ((a) > (b)) ? (a) : (b) )
 #endif
 
-#include "C:\Program Files (x86)\Robomatter Inc\ROBOTC Development Environment\Sample Programs\NXT\3rd Party Sensor Drivers\drivers\hitechnic-irseeker-v2.h"
+#include "C:\Program Files\Robomatter Inc\ROBOTC Development Environment\Sample Programs\NXT\3rd Party Sensor Drivers\drivers\hitechnic-irseeker-v2.h"
 
 // global variables
 long nNumbCyles;
@@ -151,8 +151,6 @@ task main ()
     }
     else if(stage == 2){
     		//Turn around
-      motor[driveL] = motor[driveL2] = -20;
-      motor[driveR] = motor[driveR2] = 20;
       if(lacS3>last||lacS3==last){
        last = lacS3;
      }
@@ -195,7 +193,7 @@ task main ()
 
   }
   else if(stage == 5){
-   
+
   }
 }
 }
