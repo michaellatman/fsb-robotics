@@ -100,6 +100,7 @@ task main ()
             //if (!HTIRS2readAllACStrength(HTIRS3, lacS1, lacS2, lacS3, lacS4, lacS5 ))
             //break; // I2C read error occurred
 
+            //Displays all sensor fields. We will condense this when we do final research.
             displayText(1, "D", _dirDC, _dirAC);
             displayText(2, "1", acS1,0);
             displayText(3, "2", acS2,0);
@@ -121,26 +122,28 @@ task main ()
             	}
           	}
           	else if(stage == 2){
+          			//Set motors in proper directions
           			if(dir == "right"){
           				motor[driveL] = 100;
-          				motor[driveR] = 50;
+          				motor[driveR] = 70;
           			}
           			else if(dir == "left"){
-          				motor[driveL] = 50;
+          				motor[driveL] = 70;
           				motor[driveR] = 100;
           			}
-
-          			if(sensor<last){
-          				last = sensor;
-          				flags++;
-          			}
+          			//If the value fell add a flag. If not set to zero.
+          			if(sensor<last) flags++;
           			else flags = 0;
 
+          			//Set the last value we recorded
+          			last = sensor;
+
           			if(flags>3){
-          				if(dir == "right") dir = "left";
-          				else dir = "right";
+          				//A lesser version of IF/ELSE see: http://en.wikipedia.org/wiki/%3F:#C
+          				dir = dir == "right" ? "left" : "right";
           			}
           			if(sensor > 155){
+          				//We may have reached the rack although the number above is varible and I have to do more research.
           				motor[driveL] = motor[driveR] = 0;
           				stage++;
           			}
