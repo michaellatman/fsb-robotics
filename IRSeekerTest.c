@@ -25,8 +25,6 @@ long nNumbCyles;
 long nInits = 0;
 string sTextLines[8];
 
-int GoBackFor = 1000; //Reverse time
-int SpinFor = 500; //Turn time
 
 // function prototypes
 void displayText(int nLineNumber, const string cChar, int nValueDC, int nValueAC);
@@ -35,8 +33,6 @@ void displayInstructions();
 // main task
 task main ()
 {
-    int last = 0;
-    int flags = 0;
     int stage = 1;
     int _dirDC = 0;
     int _dirAC = 0;
@@ -106,7 +102,6 @@ task main ()
             displayText(5, "4", lacS4, acS4);
             displayText(6, "5", lacS5, acS5);
             displayText(7, "Stage", stage, 0);
-
         }
     }
 }
