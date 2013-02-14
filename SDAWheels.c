@@ -156,9 +156,10 @@ task main ()
 void displayInstructions()
 {
     nxtDisplayCenteredTextLine(0, "Autonomous");
-    nxtDisplayCenteredBigTextLine(1, "By Michael");
-    nxtDisplayCenteredTextLine(2, "& Ryan");
-    wait1Msec(2000);
+    nxtDisplayCenteredBigTextLine(3, "By Michael");
+    nxtDisplayCenteredTextLine(5, "& Ryan");
+    //As much as I like my own name let's only keep this up for a few moments
+    wait1Msec(1000);
 }
 
 // Minimize LCD screen flicker by only updating LCD when data has changed
