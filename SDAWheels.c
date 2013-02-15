@@ -1,7 +1,7 @@
 #pragma config(Hubs,  S1, HTMotor,  HTMotor,  HTServo,  none)
 #pragma config(Sensor, S2,     liftheight,     sensorI2CHiTechnicColor)
 #pragma config(Sensor, S3,     HTIRS2,         sensorI2CCustom)
-#pragma config(Sensor, S4,     HTIRS3,         sensorI2CCustom)
+#pragma config(Sensor, S4,     sonarSensor,         sensorSONAR)
 #pragma config(Motor,  mtr_S1_C1_1,     motorD,        tmotorTetrix, openLoop)
 #pragma config(Motor,  mtr_S1_C1_2,     arm,           tmotorTetrix, openLoop)
 #pragma config(Motor,  mtr_S1_C2_1,     driveR,        tmotorTetrix, openLoop)
@@ -20,6 +20,7 @@
 
 #include "C:\Program Files\Robomatter Inc\ROBOTC Development Environment\Sample Programs\NXT\3rd Party Sensor Drivers\drivers\hitechnic-irseeker-v2.h"
 #include "JoystickDriver.c"  //Include file to "handle" the Bluetooth messages.
+#include "AdvancedSensors.c"
 // global variables
 long nNumbCyles;
 long nInits = 0;
@@ -33,6 +34,9 @@ void displayText(int nLineNumber, const string cChar, int nValueDC, int nValueAC
 void displayInstructions();
 
 string dir = "right";
+int nRed;
+int nGreen;
+int nBlue;
 // main task
 task main ()
 {
@@ -43,6 +47,7 @@ task main ()
     int _dirAC = 0;
     //int lacS1, lacS2, lacS3, lacS4, lacS5 = 0;
     int acS1, acS2, acS3, acS4, acS5 = 0;
+
 
     // the default DSP mode is 1200 Hz.
     tHTIRS2DSPMode _mode = DSP_1200;
@@ -55,35 +60,14 @@ task main ()
         // orange enter button
 
         PlaySound(soundBeepBeep);
-        while(bSoundActive)
-        {}
-        eraseDisplay();
-        nNumbCyles = 0;
-        ++nInits;
-        while (true)
-        {
-            if ((nNumbCyles & 0x04) == 0)
-            nxtDisplayTextLine(0, "Initializing...");
-            else
-            nxtDisplayTextLine(0, "");
-            nxtDisplayCenteredBigTextLine(1, "IR Seekr");
-
-            // set the DSP to the new mode
-            if (HTIRS2setDSPMode(HTIRS2, _mode))
-            break; // Sensor initialized
-
-            ++nNumbCyles;
-            //PlaySound(soundShortBlip);
-            nxtDisplayTextLine(4, "Inits: %d / %d", nInits, nNumbCyles);
-            nxtDisplayCenteredTextLine(6, "Connect Sensor");
-            nxtDisplayCenteredTextLine(7, "to Port S2");
-            wait1Msec(100);
-        }
-
         eraseDisplay();
         nxtDisplayTextLine(0, "      AC");
+				const tSensors kColorSensorPort   = S2;	// We want the color sensor to be on port "S2"
 
+  			SensorType[kColorSensorPort] = sensorI2CHiTechnicColor; // Configure the sensor
+        getRGB(kColorSensorPort, nRed, nGreen, nBlue);
         waitForStart();
+        servo[binlift] = 121;
         while (true)
         {
             // Read the current non modulated signal direction
@@ -101,52 +85,66 @@ task main ()
             //break; // I2C read error occurred
 
             //Displays all sensor fields. We will condense this when we do final research.
-            displayText(1, "D", _dirDC, _dirAC);
-            displayText(2, "1", acS1,0);
-            displayText(3, "2", acS2,0);
-            displayText(4, "3", acS3,0);
-            displayText(5, "4", acS4,0);
-            displayText(6, "5", acS5,0);
-            displayText(7, "Stage", stage, 0);
+            nxtDisplayTextLine(2, "1:  %d", acS1);
+            nxtDisplayTextLine(3, "2:  %d", acS2);
+            nxtDisplayTextLine(4, "3:  %d", acS3);
+            nxtDisplayTextLine(5, "4:  %d", acS4);
+            nxtDisplayTextLine(6, "5:  %d", acS5,);
+            nxtDisplayTextLine(7, "Stage: %d", stage);
 
-            int sensor = acS1;
+            int sensor = acS3;
 
             if(stage == 1){
             	//Drive foward
-            	motor[driveL] = motor[driveR] = 100;
-            	if(sensor > 10){
-            		//We see it, stop and go to stage 2. Also set flags to zero, we'll need those later.
-            		motor[driveL] = motor[driveR] = 0;
-            		stage ++;
-            		flags = 0;
+            	getRGB(kColorSensorPort, nRed, nGreen, nBlue);
+            	while((nBlue < nRed&&nBlue<nGreen)||nBlue<40||nBlue == 255){
+			    			motor[arm] = 100;
+			    			getRGB(kColorSensorPort, nRed, nGreen, nBlue);
+			  			}
+
+			  			motor[arm] = 0;
+			    		motor[driveL] = motor[driveR] = 50;
+
+            	if(acS2+sensor+acS4 > 30){
+
+			  					motor[arm] = 0;
+            			//We see it, stop and go to stage 2. Also set flags to zero, we'll need those later.
+            			motor[driveL] = motor[driveR] = 0;
+            			stage ++;
+            			flags = 0;
+
             	}
           	}
           	else if(stage == 2){
           			//Set motors in proper directions
-          			if(dir == "right"){
-          				motor[driveL] = 100;
-          				motor[driveR] = 70;
-          			}
-          			else if(dir == "left"){
-          				motor[driveL] = 70;
-          				motor[driveR] = 100;
-          			}
+									if(acS3>acS4 && acS3>acS2){
+	          				motor[driveL] = 100;
+	          				motor[driveR] = 100;
+	          			}
+	          			else if(acS2+acS1 > acS4+acS5){
+	          				motor[driveL] = 0;
+	          				motor[driveR] = 100;
+	          			}
+	          			else if(acS4+acS5 > acS2+acS1){
+	          				motor[driveL] = 100;
+	          				motor[driveR] = 0;
+	          			}
+
           			//If the value fell add a flag. If not set to zero.
-          			if(sensor<last) flags++;
-          			else flags = 0;
 
-          			//Set the last value we recorded
-          			last = sensor;
-
-          			if(flags>3){
-          				//A lesser version of IF/ELSE see: http://en.wikipedia.org/wiki/%3F:#C
-          				dir = dir == "right" ? "left" : "right";
-          			}
-          			if(sensor > 155){
+          			if(SensorValue(sonarSensor) < 25){
           				//We may have reached the rack although the number above is varible and I have to do more research.
           				motor[driveL] = motor[driveR] = 0;
           				stage++;
           			}
+          	}
+          	else if(stage == 3){
+          		motor[arm] = -100;
+          		wait1Msec(1000);
+          		motor[arm] = 0;
+          		motor[driveL] = motor[driveR] = -100;
+          		wait1Msec(2000);
+          		motor[driveL] = motor[driveR] = 0;
           	}
         }
     }
