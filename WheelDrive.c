@@ -86,10 +86,6 @@ task main(){
 
        	float divide;
        	divide = 2;
-       	if (joy1Btn(2))
-        {
-        	divide = .1;
-        }
        	left = oney/divide;
        	right = oney/divide;
 
@@ -125,25 +121,15 @@ task main(){
           	//wait1Msec(200);
           	//motor[arm]= 0;
           }
-          if (joy1Btn(3))
+          if (joy1Btn(2))
           {
-          	/*
-          	servo[binlift] = 139;
-          	bin = 139;
-          	motor[arm] = -80;
-          	motor[DFL] = 50;
-          	motor[DFR] = -50;
-          	motor[DBL] = 50;
-          	motor[DBR] = -50;
-          	wait1Msec(200);
-          	motor[arm]= 0;
-          	wait10Msec(100);
-          	motor[DFL] = 0;
-          	motor[DFR] = 0;
-          	motor[DBL] = 0;
-          	motor[DBR] = 0;
-          	*/
-
+          	if(nGreen < nRed&&nGreen < nBlue||nBlue > 155||nRed == 255){
+          		getRGB(kColorSensorPort, nRed, nGreen, nBlue);
+			    		motor[arm] = 100;
+			  		}
+			  		else{
+			  			motor[arm] = 0;
+			  		}
           }
 
 
