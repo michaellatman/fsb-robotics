@@ -40,7 +40,7 @@ task main(){
 	waitForStart();   // wait for start of tele-op phase
 	//servo[armRelease] = 0;
 	int tick = 0;
-	int bin = 255;
+	int bin = 99;
 	//servo[binlift] = 30;
 	const tSensors kColorSensorPort   = S2;	// We want the color sensor to be on port "S2"
 
@@ -117,8 +117,8 @@ task main(){
 			    		motor[arm] = -100;
 			  		}
 			  		motor[arm] = 0;
-			  		servo[binlift] = 119;
-          	bin = 119;
+			  		servo[binlift] = 99;
+          	bin = 99;
 
 
           	//motor[arm] = -50;
@@ -172,12 +172,12 @@ task main(){
 	          if (joy1Btn(5))
 	          {
 
-	          	bin++;
+	          	bin--;
 
 	          }
 	          else if (joy1Btn(7))
 	          {
-	          	bin--;
+	          	bin++;
 	          }
 	          if(bin>200) bin = 200;
 	          if(bin<30) bin = 30;

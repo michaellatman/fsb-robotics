@@ -105,32 +105,43 @@ task main ()
 
 
 			  			motor[arm] = 0;
-			    		motor[driveL] = motor[driveR] = 50;
+			    		motor[driveL] = motor[driveR] = 100;
+			    		wait1Msec(2200);
+			    		motor[driveL] = motor[driveR] = 10;
+			    		stage++;
 
-            	if(acS2+sensor+acS4 > 30){
-
-			  					motor[arm] = 0;
-            			//We see it, stop and go to stage 2. Also set flags to zero, we'll need those later.
-            			motor[driveL] = motor[driveR] = 0;
-            			stage ++;
-            			writeDebugStreamLine("Stage!");
-            			flags = 0;
-
-            	}
           	}
           	else if(stage == 2){
           			//Set motors in proper directions
-									if(acS3>(acS4+acS2+80)){
-	          				motor[driveL] = 50;
-	          				motor[driveR] = 50;
+									if(acS3>(acS1+acS2+acS4+acS5)){
+	          				motor[driveL] = 100;
+	          				motor[driveR] = 100;
 	          			}
-	          			else if(acS2+acS1 > acS4+acS5){
+	          			else if(acS4+acS5 > acS1+acS2){
+	          				motor[driveL] = 100;
+	          				motor[driveR] = -100;
+	          				wait1Msec(800);
 	          				motor[driveL] = 0;
-	          				motor[driveR] = 50;
-	          			}
-	          			else if(acS4+acS5 > acS2+acS1){
-	          				motor[driveL] = 50;
 	          				motor[driveR] = 0;
+	          				motor[driveL] = 100;
+	          				motor[driveR] = 100;
+	          				wait1Msec(1000);
+	          				motor[driveL] = 0;
+	          				motor[driveR] = 0;
+	          				motor[driveL] = -100;
+	          				motor[driveR] = 100;
+	          				wait1Msec(800);
+	          				motor[driveL] = 0;
+	          				motor[driveR] = 0;
+	          				stage=12;
+	          			}
+	          			else if(acS1+acS2 > acS1+acS2){
+	          				motor[driveL] = -100;
+	          				motor[driveR] = 100;
+	          				wait1Msec(100);
+	          				motor[driveL] = 0;
+	          				motor[driveR] = 0;
+	          				stage=12;
 	          			}
 
           			//If the value fell add a flag. If not set to zero.
