@@ -126,15 +126,15 @@ task main(){
           }
           if (joy1Btn(2))
           {
-          	if(nGreen < nRed&&nGreen < nBlue||nBlue > 155||nRed == 255){
-          		getRGB(kColorSensorPort, nRed, nGreen, nBlue);
+          	if(nBlue < nGreen&&nBlue < nRed||nBlue == 255)
+          	{
+          		//getRGB(kColorSensorPort, nRed, nGreen, nBlue);
 			    		motor[arm] = motor[arm2] = 100;
 			  		}
 			  		else{
 			  			motor[arm] = motor[arm2] = 0;
 			  		}
-          }
-
+			  	}
 
           if (joy1Btn(8))
           {
