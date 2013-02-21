@@ -1,6 +1,7 @@
 #pragma config(Hubs,  S1, HTMotor,  HTMotor,  HTServo,  none)
 #pragma config(Sensor, S2,     liftheight,     sensorI2CHiTechnicColor)
 #pragma config(Motor,  mtr_S1_C1_1,     motorD,        tmotorTetrix, openLoop)
+#pragma config(Motor,  mtr_S1_C1_1,     arm2,          tmotorTetrix, openLoop)
 #pragma config(Motor,  mtr_S1_C1_2,     arm,           tmotorTetrix, openLoop)
 #pragma config(Motor,  mtr_S1_C2_1,     driveR,        tmotorTetrix, openLoop)
 #pragma config(Motor,  mtr_S1_C2_2,     driveL,        tmotorTetrix, openLoop, reversed)
@@ -43,6 +44,8 @@ task main(){
 	while(nRed < nGreen&&nRed<nBlue||nGreen > 130||nRed < 130){
           		getRGB(kColorSensorPort, nRed, nGreen, nBlue);
 			    		motor[arm] = -100;
+			    		motor[arm2] = -100;
 	}
 	motor[arm] = 0;
+	motor[arm2] = 0;
 }
