@@ -43,7 +43,7 @@ task main(){
 	waitForStart();   // wait for start of tele-op phase
 	//servo[armRelease] = 0;
 	int tick = 0;
-	int bin = 99;
+	int bin = 139;
 	//servo[binlift] = 30;
 	const tSensors kColorSensorPort   = S2;	// We want the color sensor to be on port "S2"
 
