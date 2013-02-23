@@ -116,8 +116,8 @@ task main(){
 			    		motor[arm] = motor[arm2] = -100;
 			  		}
 			  		motor[arm] = motor[arm2] = 0;
-			  		servo[binlift] = 99;
-          	bin = 99;
+			  		servo[binlift] = 139;
+          	bin = 139;
 
 
           	//motor[arm] = motor[arm2] = -50;
@@ -161,12 +161,12 @@ task main(){
 	          if (joy1Btn(5))
 	          {
 
-	          	bin--;
+	          	bin++;
 
 	          }
 	          else if (joy1Btn(7))
 	          {
-	          	bin++;
+	          	bin--;
 	          }
 	          if(bin>200) bin = 200;
 	          if(bin<30) bin = 30;

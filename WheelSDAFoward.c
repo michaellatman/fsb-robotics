@@ -33,15 +33,20 @@ task main()
 				int nRed;
     		int nGreen;
     		int nBlue;
-
-    		getRGB(kColorSensorPort, nRed, nGreen, nBlue);
-	while(nBlue < nGreen&&nBlue<nRed||nBlue==255&&runs<30){
+	getRGB(kColorSensorPort, nRed, nGreen, nBlue);
+	while(nGreen>nBlue&&nRed>nBlue||nBlue>120){
           		getRGB(kColorSensorPort, nRed, nGreen, nBlue);
-			    		motor[arm] = motor[arm2] = 80;
+			    		motor[arm] = motor[arm2] = 100;
 			    		runs++;
+			  			nxtDisplayTextLine(2, "Color:  %d",  (short) SensorValue[kColorSensorPort]);
+			  			nxtDisplayTextLine(3, "Red:    %d",  nRed);
+			  			nxtDisplayTextLine(4, "Green:  %d",  nGreen);
+			  			nxtDisplayTextLine(5, "Blue:   %d",  nBlue);
+			  			//wait1Msec(500);
 			    		//motor[arm2] = -100;
 	}
 	motor[arm] = motor[arm2] = 0;
+	wait1Msec(500);
 
 	while(SensorValue(sonarSensor) > 28){
           				//We may have reached the rack although the number above is varible and I have to do more research.
@@ -64,11 +69,11 @@ task main()
 	}
 	motor[arm] = motor[arm2] = 0;
 
-	 motor[driveL] = motor[driveR] = -100;
-	 wait1Msec(2000);
-	 motor[driveL] = motor[driveR] = 0;
-	 servo[binlift] = 255;
-	 	servo[binlift] = 0;
+	motor[driveL] = motor[driveR] = -100;
+	wait1Msec(3000);
+	motor[driveL] = motor[driveR] = 0;
+	servo[binlift] = 255;
+	servo[binlift] = 0;
 
 
 }
