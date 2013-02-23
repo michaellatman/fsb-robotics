@@ -46,9 +46,16 @@ task main()
 			    		//motor[arm2] = -100;
 	}
 	motor[arm] = motor[arm2] = 0;
-	wait1Msec(500);
+	wait1Msec(0);
 
 	while(SensorValue(sonarSensor) > 28){
+          				//We may have reached the rack although the number above is varible and I have to do more research.
+
+      motor[driveL] = motor[driveR] = 100;
+
+  }
+  wait1Msec(500);
+  while(SensorValue(sonarSensor) > 28){
           				//We may have reached the rack although the number above is varible and I have to do more research.
 
       motor[driveL] = motor[driveR] = 100;

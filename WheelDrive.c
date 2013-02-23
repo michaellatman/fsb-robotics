@@ -134,6 +134,11 @@ task main(){
 			  			motor[arm] = motor[arm2] = 0;
 			  		}
           }
+          if (joy1Btn(4))
+          {
+          	servo[binlift] = 0;
+          	wait1Msec(10);
+          }
 
 
           if (joy1Btn(8))
