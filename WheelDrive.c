@@ -111,19 +111,20 @@ task main(){
           	//servo[binlift2] = 139;
 
 
-          	while(nRed < nGreen&&nRed<nBlue||nGreen > 155||nRed == 255){
+          	/*while(nRed < nGreen&&nRed<nBlue||nGreen > 155||nRed == 255){
           		getRGB(kColorSensorPort, nRed, nGreen, nBlue);
 			    		motor[arm] = motor[arm2] = -100;
 			  		}
 			  		motor[arm] = motor[arm2] = 0;
 			  		servo[binlift] = 139;
           	bin = 139;
-
+						*/
 
           	//motor[arm] = motor[arm2] = -50;
           	//wait1Msec(200);
           	//motor[arm] = motor[arm2]= 0;
           }
+          /*
           if (joy1Btn(2))
           {
           	if(nGreen < nRed&&nGreen < nBlue||nBlue > 155||nRed == 255){
@@ -134,6 +135,7 @@ task main(){
 			  			motor[arm] = motor[arm2] = 0;
 			  		}
           }
+          */
           if (joy1Btn(4))
           {
           	servo[binlift] = 0;
