@@ -10,6 +10,15 @@ task main ()
 {
 	int nButtonsMask;
 	SensorType[S4] = sensorHiTechnicTouchMux;
+	SensorType[S1] = sensorI2CHiTechnicColor;
+	SensorType[S3] = sensorI2CHiTechnicColor;
+	int rightRed;
+	int rightGreen;
+	int rightBlue;
+	int leftRed;
+	int leftGreen;
+	int leftBlue;
+
 	while(true){
 
 
@@ -17,16 +26,23 @@ task main ()
 // The sensor value is a 4-bit map indicating which of the possible four
 // touch sensors are pressed.
 //
-	nButtonsMask = SensorValue[S4];
-		if(nButtonsMask & 0x08){
+		getRGB(S1, rightRed, rightGreen, rightBlue);
+		getRGB(S3, leftRed, leftGreen, leftBlue);
+		nButtonsMask = SensorValue[S4];
+		if((nButtonsMask & 0x08)||leftRed > 20){
   		motor[Left] = 0;
   		motor[Right] = 0;
+  		if(rightBlue > 20&&leftRed>20){
+  			PlayTone(784, 15);
+  		}
   	}
   	else{
   		motor[Left] = 50;
   		motor[Right] = 50;
   	}
 	}
+	motor[Left] = 0;
+  motor[Right] = 0;
 
 
 
