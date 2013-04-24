@@ -131,7 +131,8 @@ task main(){
           		//getRGB(kColorSensorPort, nRed, nGreen, nBlue);
 			    		motor[arm] = motor[arm2] = 100;
 			  		}
-			  		else{
+			  		else
+			  			{
 			  			motor[arm] = motor[arm2] = 0;
 			  		}
 			  	}
