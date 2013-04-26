@@ -20,17 +20,17 @@ void seek(){
 		getRGB(rightColor, rightRed, rightGreen, rightBlue);
 		getRGB(leftColor, leftRed, leftGreen, leftBlue);
 		int nButtonsMask = SensorValue[MultiPlex];
-		if((nButtonsMask & 0x08)||leftRed > 20){
+		if(leftBlue>20||leftRed > 20){
 	  		motor[Left] = 0;
 	  		motor[Right] = 0;
-	  		if(rightBlue > 20&&leftRed>20){
+	  		if((rightBlue > 20&&leftRed>20)||(rightRed > 20&&leftBlue>20)){
 	  			PlayTone(784, 15);
 	  			escape = 1;
 	  		}
   		}
 	  	else{
-	  		motor[Left] = 50;
-	  		motor[Right] = 50;
+	  		motor[Left] = 40;
+	  		motor[Right] = 40;
 	  	}
 	}
 	motor[Left] = 0;
@@ -71,23 +71,29 @@ void sense(){
 		//Lets go left
 		motor[Left ] = 20;
 		motor[Right] = 20;
-		wait1Msec(1000);
-		motor[Right] = 20;
-		motor[Left ] = 0;
-		wait1Msec(2500);
-		motor[Right] = 20;
-		motor[Left ] = 20;
-		wait1Msec(2500);
+		wait1Msec(1500);
 		motor[Right] = 0;
 		motor[Left ] = 20;
+		wait1Msec(2500);
+		motor[Right] = 20;
+		motor[Left ] = 20;
+		wait1Msec(2000);
+		motor[Right] = 20;
+		motor[Left ] = 0;
 		wait1Msec(2500);
 	}
 	else{
 		motor[Left ] = 20;
 		motor[Right] = 20;
-		wait1Msec(1000);
+		wait1Msec(1500);
 		motor[Right] = 20;
 		motor[Left ] = 0;
+		wait1Msec(2500);
+		motor[Right] = 20;
+		motor[Left ] = 20;
+		wait1Msec(2000);
+		motor[Right] = 0;
+		motor[Left ] = 20;
 		wait1Msec(2500);
 	}
 
@@ -96,12 +102,13 @@ void sense(){
 task main ()
 {
 	int num = 0;
-	while(num != 4){
-		//seek();
+	while(num != 7){
+		seek();
+		sense();
 		num++;
 	}
-	seek();
-	sense();
+	//seek();
+	//sense();
 }
 
 /*
