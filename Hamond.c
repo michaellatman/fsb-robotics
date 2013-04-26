@@ -14,15 +14,17 @@ void seek(){
 	int leftRed;
 	int leftGreen;
 	int leftBlue;
-	while(leftRed < 20){
+	int escape = 0;
+	while(escape == 0){
 		getRGB(rightColor, rightRed, rightGreen, rightBlue);
 		getRGB(leftColor, leftRed, leftGreen, leftBlue);
-		nButtonsMask = SensorValue[MultiPlex];
+		int nButtonsMask = SensorValue[MultiPlex];
 		if((nButtonsMask & 0x08)||leftRed > 20){
 	  		motor[Left] = 0;
 	  		motor[Right] = 0;
 	  		if(rightBlue > 20&&leftRed>20){
 	  			PlayTone(784, 15);
+	  			escape = 1;
 	  		}
   		}
 	  	else{
@@ -35,6 +37,7 @@ void seek(){
 }
 
 void sensorLeft(){
+	int nButtonsMask = SensorValue[MultiPlex];
 	while(!(nButtonsMask & 0x01)){
 		nButtonsMask = SensorValue[MultiPlex];
 		motor[Proximity] = 20;
@@ -45,6 +48,7 @@ void sensorLeft(){
 	motor[Proximity] = 0;
 }
 void sensorRight(){
+	int nButtonsMask = SensorValue[MultiPlex];
 	while(!(nButtonsMask & 0x02)){
 		nButtonsMask = SensorValue[MultiPlex];
 		motor[Proximity] = -20;
@@ -59,21 +63,22 @@ void sensorRight(){
 void sense(){
 	if(sensorLeft() > sensorRight()){
 		//Lets go left
-		
+
 	}
 	else{
 
 	}
-	
+
 }
 
 task main ()
 {
 	int num = 0;
 	while(num != 4){
-		seek();
-
+		//seek();
+		num++;
 	}
+	sensorLeft();
 
 
 }
