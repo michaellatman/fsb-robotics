@@ -1,5 +1,6 @@
 #pragma config(Sensor, S4,     MultiPlex,           sensorHiTechnicTouchMux)
 #pragma config(Sensor, S1,     rightColor,           sensorI2CHiTechnicColor)
+#pragma config(Sensor, S2,     sonar,               tSensors)
 #pragma config(Sensor, S3,     leftColor,           sensorI2CHiTechnicColor)
 #pragma config(Motor,  motorA,          Left,          tmotorNXT, PIDControl, encoder)
 #pragma config(Motor,  motorB,          Right,         tmotorNXT, PIDControl, encoder)
@@ -36,7 +37,7 @@ void seek(){
   	motor[Right] = 0;
 }
 
-void sensorLeft(){
+int sensorLeft(){
 	int nButtonsMask = SensorValue[MultiPlex];
 	while(!(nButtonsMask & 0x01)){
 		nButtonsMask = SensorValue[MultiPlex];
@@ -47,8 +48,9 @@ void sensorLeft(){
 	wait1Msec(1000);
 	//Stpp
 	motor[Proximity] = 0;
+	return SensorValue(sonar);
 }
-void sensorRight(){
+int sensorRight(){
 	int nButtonsMask = SensorValue[MultiPlex];
 	while(!(nButtonsMask & 0x02)){
 		nButtonsMask = SensorValue[MultiPlex];
@@ -60,15 +62,22 @@ void sensorRight(){
 	//Stpp
 	motor[Proximity] = 0;
 
+	return SensorValue(sonar);
+
 }
 
 void sense(){
 	if(sensorLeft() > sensorRight()){
 		//Lets go left
 
+		motor[left ] = 20;
+		wait1Msec(1000);
+		motor[left ] = 0;
 	}
 	else{
-
+		motor[right] = 20;
+		wait1Msec(1000);
+		motor[right] = 0;
 	}
 
 }
@@ -80,9 +89,7 @@ task main ()
 		//seek();
 		num++;
 	}
-	sensorRight();
-
-
+	sense();
 }
 
 /*
