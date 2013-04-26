@@ -44,6 +44,7 @@ void sensorLeft(){
 	}
 	motor[Proximity] = -20;
 	//Wait
+	wait1Msec(1000);
 	//Stpp
 	motor[Proximity] = 0;
 }
@@ -55,6 +56,7 @@ void sensorRight(){
 	}
 	motor[Proximity] = 20;
 	//Wait
+	wait1Msec(1000);
 	//Stpp
 	motor[Proximity] = 0;
 
@@ -78,7 +80,7 @@ task main ()
 		//seek();
 		num++;
 	}
-	sensorLeft();
+	sensorRight();
 
 
 }
