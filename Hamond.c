@@ -1,7 +1,7 @@
-#pragma config(Sensor, S4,     MultiPlex,           sensorHiTechnicTouchMux)
-#pragma config(Sensor, S1,     rightColor,           sensorI2CHiTechnicColor)
-#pragma config(Sensor, S2,     sonar,               tSensors)
-#pragma config(Sensor, S3,     leftColor,           sensorI2CHiTechnicColor)
+#pragma config(Sensor, S1,     rightColor,     sensorI2CHiTechnicColor)
+#pragma config(Sensor, S2,     sonar,          sensorSONAR)
+#pragma config(Sensor, S3,     leftColor,      sensorI2CHiTechnicColor)
+#pragma config(Sensor, S4,     MultiPlex,      sensorHiTechnicTouchMux)
 #pragma config(Motor,  motorA,          Left,          tmotorNXT, PIDControl, encoder)
 #pragma config(Motor,  motorB,          Right,         tmotorNXT, PIDControl, encoder)
 #pragma config(Motor,  motorC,          Proximity,     tmotorNXT, PIDControl, encoder)
@@ -69,15 +69,26 @@ int sensorRight(){
 void sense(){
 	if(sensorLeft() > sensorRight()){
 		//Lets go left
-
-		motor[left ] = 20;
+		motor[Left ] = 20;
+		motor[Right] = 20;
 		wait1Msec(1000);
-		motor[left ] = 0;
+		motor[Right] = 20;
+		motor[Left ] = 0;
+		wait1Msec(2500);
+		motor[Right] = 20;
+		motor[Left ] = 20;
+		wait1Msec(2500);
+		motor[Right] = 0;
+		motor[Left ] = 20;
+		wait1Msec(2500);
 	}
 	else{
-		motor[right] = 20;
+		motor[Left ] = 20;
+		motor[Right] = 20;
 		wait1Msec(1000);
-		motor[right] = 0;
+		motor[Right] = 20;
+		motor[Left ] = 0;
+		wait1Msec(2500);
 	}
 
 }
@@ -89,6 +100,7 @@ task main ()
 		//seek();
 		num++;
 	}
+	seek();
 	sense();
 }
 
