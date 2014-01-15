@@ -35,8 +35,7 @@
 
 #include "JoystickDriver.c"  //Include file to "handle" the Bluetooth messages.
 
-
-
+int soft = 0;
 task drive(){
 	while(true){
        	float x1 = joystick.joy1_x1;
@@ -56,8 +55,7 @@ task drive(){
        	x2 = 15.78*pow((1.0158),x2);
        	y1 = 15.78*pow((1.0158),y1);
        	y2 = 15.78*pow( (1.0158),y2);*/
-				nxtDisplayClearTextLine(0);
-				nxtDisplayString(0, "%d", x1);
+
        	//
 
 				//x1 = //pow((x1/divider),3)/multiply;
@@ -110,21 +108,24 @@ task drive(){
 
        	motor[driveR] = RR;
        	motor[driveFR] = RF;
+       	//wait1Msec(10);
 				abortTimeslice();
 	}
 }
 int wristLoc = 50;
 task wristControl(){
 	while(true){
+		//nxtDisplayClearTextLine(0);
+			//	nxtDisplayString(0, "%d", wristLoc);
        	if(joy1Btn(05)){
-					if(wristLoc>=50){
-						wristLoc-=4;
-					}
+					//if(wristLoc>=50){
+						wristLoc-=1;
+					//}
 				}
 				else if(joy1Btn(07)){
-					if(wristLoc<=150){
-						wristLoc+=4;
-					}
+					//if(wristLoc<=150){
+						wristLoc+=1;
+					//}
 				}
 				servo[wrist] = wristLoc;
 				wait1Msec(50);
@@ -133,16 +134,31 @@ task wristControl(){
 bool sto;
 int lastShoulder;
 int shoulderRate = 0;
+bool lift = false;
+
 task shoulderControl(){
 	lastShoulder = nMotorEncoder[Shoulder];
 	while(true){
 		shoulderRate = nMotorEncoder[Shoulder]-lastShoulder;
 		lastShoulder = nMotorEncoder[Shoulder];
-		if(nMotorEncoder[Shoulder]>1300){
-			motor[Shoulder] = -10;
+
+		if(joy1Btn(09)){
+					motor[Shoulder] = 80;
+
+					sto = true;
+					lift = true;
+		}
+		else if(joy1Btn(09)&&nMotorEncoder[Shoulder]>1300){
+			motor[Shoulder] = -5;
 			wait1Msec(20);
 
 		}
+		else if(joy1Btn(02)){
+			motor[Shoulder] = -20;
+			wait1Msec(20);
+
+		}
+
 		if(joy1Btn(06)&&nMotorEncoder[Shoulder]<900){
 					motor[Shoulder] = 80;
 					sto = true;
@@ -150,11 +166,11 @@ task shoulderControl(){
 
 		else if(joy1Btn(08)){
 					sto = true;
-					if(nMotorEncoder[Shoulder]>800)
+					if(nMotorEncoder[Shoulder]>1000)
 						motor[Shoulder] = -20;
-					else if(nMotorEncoder[Shoulder]>500)
-						motor[Shoulder] = -5;
-					else if(shoulderRate > 50){
+					else if(nMotorEncoder[Shoulder]>800)
+						motor[Shoulder] = -1;
+					else if(nMotorEncoder[Shoulder] > 200){
 							motor[Shoulder] = 3;
 					}
 					else{
@@ -172,37 +188,50 @@ task shoulderControl(){
 		else{
 			motor[Shoulder] = 15;
 		}
-	}
 
+	}
+	wait1Msec(10);
 		abortTimeslice();
+}
+task liftControl(){
+	while(true){
+
+	if(joystick.joy1_TopHat==0){
+		//wristLoc = 124;
+		//stopTask(shoulderControl);
+		motor[Lift]=80;
+	}
+	else if(joystick.joy1_TopHat==4){
+		//wristLoc = 124;
+		//StartTask(shoulderControl);
+		motor[Lift]=-80;
+	}
+	else{
+		motor[Lift]=0;
+	}
+	wait1Msec(10);
+	abortTimeslice();
+	}
 }
 int LEVEL_DEBUG = 0;
 int LEVEL_WARN = 1;
 int LEVEL_ERROR = 2;
-string 	debug[8];
-void addDebug(int level, string message){
-	debug[0] = message;
-}
 
-task debugger(){
-	while (true)
-	{
-		abortTimeslice();
-	}
-
-}
 
 task handControl(){
 	while(true){
 		if(joy1Btn(01)){
-				servo[hand] = 25;
-				wait1Msec(500);
-				servo[hand] = 50;
-				wait1Msec(500);
-				servo[hand] = 75;
-				wait1Msec(500);
-				servo[hand] = 50;
+				servo[hand] = 25+soft;
+				wait1Msec(1000);
+				servo[hand] = 50+soft;
+				wait1Msec(1000);
+				servo[hand] = 75+soft;
+				wait1Msec(1000);
+				servo[hand] = 50+soft;
 		}
+		wait1Msec(10);
+		abortTimeslice();
+
 	}
 }
 task main(){
@@ -212,7 +241,7 @@ task main(){
 
 	//bool turbo = false;
 	//
-	//waitForStart();   // wait for start of tele-op phase
+	waitForStart();   // wait for start of tele-op phase
 	//servo[armRelease] = 0;
 
 	//servo[binlift] = 30;
@@ -228,13 +257,14 @@ task main(){
  		Setup arm at correct angles
   */
 
-	servo[hand] = 50;
-  motor[Shoulder] = 10; //Actually stops.
+	//servo[hand] = 50;
+  motor[Shoulder] = 15; //Actually stops.
   //nMotorEncoder[Shoulder] = 0; //We are now at "0"
-  //StartTask(drive,10);
-  //StartTask(wristControl);
+  StartTask(drive,10);
+  StartTask(wristControl);
   StartTask(handControl);
-  //StartTask(shoulderControl);
+  StartTask(shoulderControl);
+  StartTask(liftControl);
 	while(true)
 	{
 
