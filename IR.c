@@ -177,7 +177,7 @@ task main ()
     	}
       else if(directional){
       	//nxtDisplayBigStringAt(20,45,"Done");
-      	if(acS1>50){
+      	if(acS1>40){
 
       		motor[driveL] = -30;
 				  motor[driveFL] = -30;
@@ -186,7 +186,7 @@ task main ()
       		nxtDisplayBigStringAt(20,45,"On Left");
 
       	}
-      	else if(acS5>50){
+      	else if(acS5>40){
       			motor[driveL] = 30;
 				  motor[driveFL] = 30;
 				  motor[driveR] = -30;
@@ -198,10 +198,10 @@ task main ()
       		nxtDisplayBigStringAt(20,45,"Ahead");
       	}
       	else{
-	      	motor[driveL] = 30;
-				  motor[driveFL] = 30;
-				  motor[driveR] = -30;
-				  motor[driveFR] = -30;
+	      	motor[driveL] = -30;
+				  motor[driveFL] = -30;
+				  motor[driveR] = 30;
+				  motor[driveFR] = 30;
       	}
 
     	}
