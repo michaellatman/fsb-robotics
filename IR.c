@@ -1,7 +1,7 @@
 #pragma config(Hubs,  S1, HTMotor,  HTMotor,  HTMotor,  HTMotor)
 #pragma config(Sensor, S2,     HTIRS2,         sensorI2CCustom)
 #pragma config(Sensor, S3,     Sonar,          sensorSONAR)
-#pragma config(Sensor, S4,     sideTouch,      sensorTouch)
+#pragma config(Sensor, S4,     HTGYRO,         sensorI2CHiTechnicGyro)
 #pragma config(Motor,  mtr_S1_C1_1,     Shoulder,      tmotorTetrix, openLoop, reversed, encoder)
 #pragma config(Motor,  mtr_S1_C1_2,     Lift,          tmotorTetrix, openLoop, encoder)
 #pragma config(Motor,  mtr_S1_C2_1,     Spin,          tmotorTetrix, openLoop, reversed)
@@ -64,38 +64,58 @@ int sticky = 1000;
 task driveToRamp(){
 	nxtDisplayClearTextLine(2);
 	nxtDisplayClearTextLine(3);
+	int direction = 1;
+	if(set==2)direction=-1;
 
+	//Back up
 	motor[driveL] = -30;
   motor[driveFL] = -30;
   motor[driveR] = -30;
   motor[driveFR] = -30;
   wait1Msec(1000);
+	//Move Right
 
+  motor[driveL] = 30*direction;
+  motor[driveFL] = 30*direction;
+  motor[driveR] = -30*direction;
+  motor[driveFR] = -30*direction;
+  if(set==1)wait1Msec(1500);
+  if(set==2)wait1Msec(3500);
 
-  motor[driveL] = 30;
-  motor[driveFL] = 30;
-  motor[driveR] = -30;
-  motor[driveFR] = -30;
-  wait1Msec(2000);
+  //Foward
+  motor[driveL] = 100;
+  motor[driveFL] = 100;
+  motor[driveR] = 100;
+  motor[driveFR] = 100;
+  wait1Msec(50);
 
+  	//Move Right
+
+  motor[driveL] = 30*direction;
+  motor[driveFL] = 30*direction;
+  motor[driveR] = -30*direction;
+  motor[driveFR] = -30*direction;
+  wait1Msec(200);
+
+	//Foward
   motor[driveL] = 100;
   motor[driveFL] = 100;
   motor[driveR] = 100;
   motor[driveFR] = 100;
   wait1Msec(200);
 
-   motor[driveL] = 30;
-  motor[driveFL] = 30;
-  motor[driveR] = -30;
-  motor[driveFR] = -30;
+  motor[driveL] = 30*direction;
+  motor[driveFL] = 30*direction;
+  motor[driveR] = -30*direction;
+  motor[driveFR] = -30*direction;
   wait1Msec(200);
 
   motor[driveL] = 100;
   motor[driveFL] = 100;
   motor[driveR] = 100;
   motor[driveFR] = 100;
-  wait1Msec(1300);
-	 float rotSpeed = 0;
+  wait1Msec(1000);
+	float rotSpeed = 0;
   float heading = 0;
 
   // Calibrate the gyro, make sure you hold the sensor still
@@ -103,8 +123,12 @@ task driveToRamp(){
 
   // Reset the timer.
   time1[T1] = 0;
-
-  while (true)
+	motor[driveL] = -50*direction;
+  motor[driveFL] = 50*direction;
+  motor[driveR] = 50*direction;
+  motor[driveFR] = -50*direction;
+  wait1Msec(300);
+  while ((set==1&&heading<30*direction)||(set==2&&heading<180*direction))
   {
     // Wait until 20ms has passed
     while (time1[T1] < 20)
@@ -121,16 +145,14 @@ task driveToRamp(){
     // If our current rate of rotation is 100 degrees/second,
     // then we will have turned 100 * (20/1000) = 2 degrees since
     // the last time we measured.
+    if(rotSpeed>0.05)
     heading += rotSpeed * 0.02;
 
     // Display our current heading on the screen
-    nxtDisplayCenteredBigTextLine(3, "%2.0f", heading);
+    //nxtDisplayCenteredBigTextLine(3, "%2.0f", heading);
   }
-  motor[driveL] = -100;
-  motor[driveFL] = 100;
-  motor[driveR] = 100;
-  motor[driveFR] = -100;
-  wait1Msec(500);
+
+  //wait1Msec(500);
 
 
   motor[Shoulder]=-40;
@@ -196,13 +218,14 @@ task Seek(){
 	while(true){
 		HTIRS2readAllACStrength(HTIRS2, acS1, acS2, acS3, acS4, acS5 );
 	 	if(abs(acS5-acS4)<30&&acS5+acS4>70){
-	 				if(time100[T1] > 10) set = 2;
+	 				if(time100[T1] > 15) set = 2;
 
       			nxtDisplayClearTextLine(2);
       		nxtDisplayString(2,"Ahead");
       		wait1Msec(0);
 
       		 PlaySound(soundBeepBeep);
+
       		StartTask(shoulderSticky);
       		stopMotors();
       		StopTask(Seek);
@@ -217,6 +240,7 @@ task Seek(){
       	}
      }
 }
+#include "JoystickDriver.c"
 task main ()
 {
 
@@ -230,6 +254,7 @@ task main ()
 
   // show the user what to do
   displayInstructions();
+   waitForStart();
   	StartTask(Seek);
   while(true)
   {
