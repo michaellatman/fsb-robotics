@@ -54,22 +54,22 @@ task driveToRamp(){
 	if(set==2)direction=-1;
 
 	//Back up
-	YMOVE(-30,1000);
+	YMOVE(-30,400);
 
 	//Move Right OR Left if the second set
-  if(set==1)XMOVE(30,1500);
+  if(set==1)XMOVE(30,2000);
   if(set==2)XMOVE(-30,3500);
 
   //Foward
   YMOVE(100,100);
 
   //Move Right
-	if(set==1)XMOVE(30,300);
-  if(set==2)XMOVE(-30,300);
+	if(set==1)XMOVE(30,800);
+  if(set==2)XMOVE(-30,800);
 
 
 	//Foward
-  YMOVE(100,1000);
+  YMOVE(100,2000);
 
 	float rotSpeed = 0;
   float heading = 0;
@@ -80,12 +80,14 @@ task driveToRamp(){
   // Reset the timer.
   time1[T1] = 0;
 
-  while (abs(heading)>30)
+  while (abs(heading)<20)
   {
     // Wait until 20ms has passed
     while (time1[T1] < 20)
       wait1Msec(1);
-		ROTATE(50);
+		if(set==1)ROTATE(50);
+		if(set==2)ROTATE(-50);
+	//	if(set==2)ROTATE(-50);
     // Reset the timer
     time1[T1]=0;
 
@@ -97,7 +99,7 @@ task driveToRamp(){
     // If our current rate of rotation is 100 degrees/second,
     // then we will have turned 100 * (20/1000) = 2 degrees since
     // the last time we measured.
-    if(rotSpeed>0.05)
+    if(abs(rotSpeed)>0.05)
     heading += rotSpeed * 0.02;
 
     // Display our current heading on the screen
@@ -111,16 +113,16 @@ task driveToRamp(){
   wait1Msec(300);
   motor[Shoulder]=15;
 
-  XMOVE(-100,2000);
+  YMOVE(-100,2000);
 	StopTask(driveToRamp);
 }
 task moveDump(){
 	while(true){
-		XMOVE(100);
+		YMOVE(100);
 		SensorType[Sonar] = sensorSONAR;
 		int nValue = SensorValue[Sonar];
 		ClearTimer(T1);
-		while((nValue>31||nValue==255)&&time1[T1]<2000){
+		while((nValue>31||nValue==255)&&time1[T1]<5000){
 			nValue = SensorValue[Sonar];
 		}
 		stopDriveMotors();
@@ -154,10 +156,11 @@ task shoulderSticky(){
 
 task Seek(){
 	ClearTimer(T1);
+	time100[T1] = 0;
 	while(true){
 		HTIRS2readAllACStrength(HTIRS2, acS1, acS2, acS3, acS4, acS5 );
 	 	if(abs(acS5-acS4)<30&&acS5+acS4>70){
-	 				if(time100[T1] > 15) set = 2;
+	 				if(time100[T1] > 20) set = 2;
 
       			nxtDisplayClearTextLine(2);
       		nxtDisplayString(2,"Ahead");
@@ -190,5 +193,3 @@ task main ()
   	wait1Msec(10);
 	}
 }
-
-

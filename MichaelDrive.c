@@ -240,7 +240,7 @@ task handControl(){
 	}
 }
 task main(){
-
+	nMotorEncoder[Shoulder]=0;
 	//1const int THRESHOLD = 5;
 	getJoystickSettings (joystick);
 
