@@ -58,18 +58,18 @@ task driveToRamp(){
 
 	//Move Right OR Left if the second set
   if(set==1)XMOVE(30,2000);
-  if(set==2)XMOVE(-30,3500);
+  if(set==2)XMOVE(50,2900);
 
   //Foward
   YMOVE(100,100);
 
   //Move Right
 	if(set==1)XMOVE(30,800);
-  if(set==2)XMOVE(-30,800);
+  if(set==2)XMOVE(30,800);
 
 
 	//Foward
-  YMOVE(100,1200);
+  YMOVE(100,1300);
 
 	float rotSpeed = 0;
   float heading = 0;
@@ -86,7 +86,7 @@ task driveToRamp(){
     while (time1[T1] < 20)
       wait1Msec(1);
 		if(set==1)ROTATE(50);
-		if(set==2)ROTATE(-50);
+		if(set==2)ROTATE(50);
 	//	if(set==2)ROTATE(-50);
     // Reset the timer
     time1[T1]=0;
