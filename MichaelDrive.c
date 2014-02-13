@@ -75,48 +75,44 @@ int shoulderRate = 0; //The current movement rate of the arm. Should be zero at 
  * This task handles mainting shoulder position.
  * It's job is to keep track of the encoder on the arm, along with the encoder changes to calculate speed.
  */
+int shoulderTarget = nMotorEncoder[Shoulder];
 task shoulderControl(){
+	lastShoulder = nMotorEncoder[Shoulder]; //We're at this position
+	int MAX = 1300;
+	int MIN = 0;
+
 	while(true){
-		lastShoulder = nMotorEncoder[Shoulder]; //We're at this position
-		while(true){
-			shoulderRate = nMotorEncoder[Shoulder]-lastShoulder; //Current-last = rate
+		int current = nMotorEncoder[Shoulder];
+		shoulderRate = current-lastShoulder; //Current-last = rate
 
-
-			if(joy1Btn(06)&&nMotorEncoder[Shoulder]<1300){
-						if(shoulderRate<20){
-							motor[Shoulder] = 80;
-						}
-						else{
-							motor[Shoulder] = 40;
-						}
-						sto = true;
-			}
-
-			else if(joy1Btn(08)){
-						sto = true;
-						if(shoulderRate>-1){
-							motor[Shoulder] = -20;
-						}
-						else if(shoulderRate<-5){
-							motor[Shoulder] = 25;
-						}
-			}
-			else if(sto){
-
-				if(nMotorEncoder[Shoulder]>957) motor[Shoulder] = 15;
-				else motor[Shoulder] = 20;
-
-				sto=false;
-			}
-			else{
-				motor[Shoulder] = 15;
-			}
-			lastShoulder = nMotorEncoder[Shoulder];
-			wait1Msec(10);
+		if(joy1Btn(06)&&shoulderTarget<MAX){
+			shoulderTarget+=40;
 		}
+		else if(joy1Btn(08)&&shoulderTarget>MIN){
+			shoulderTarget-=40;
+		}
+		if(current<shoulderTarget-100){
 
-		wait1Msec(100);
+			if(shoulderRate<5){
+				motor[Shoulder] = 50;
+			}
+			else motor[Shoulder] = 40;
+		}
+		else if(current>shoulderTarget+100){
+			if(shoulderRate>-20&&current>650){
+				motor[Shoulder]-=5;
+			}
+			else if(current < 400){
+					motor[Shoulder] = 2;
+			}
+			else 	motor[Shoulder] = -1;
+		}
+		else motor[Shoulder] = 15;
+
+		lastShoulder = nMotorEncoder[Shoulder];
+		wait1Msec(50);
 	}
+
 }
 task liftControl(){
 	while(true){
@@ -162,7 +158,7 @@ task handControl(){
 	}
 }
 task main(){
-	nMotorEncoder[Shoulder]=0;
+	//nMotorEncoder[Shoulder]=0;
 	//1const int THRESHOLD = 5;
 	getJoystickSettings (joystick);
 
