@@ -1,4 +1,3 @@
-
 #pragma config(Hubs,  S1, HTMotor,  HTMotor,  HTMotor,  HTMotor)
 #pragma config(Sensor, S1,     ,               sensorI2CMuxController)
 #pragma config(Sensor, S2,     touch,          sensorTouch)
@@ -91,14 +90,14 @@ task shoulderControl(){
 		else if(joy1Btn(08)&&shoulderTarget>MIN){
 			shoulderTarget-=40;
 		}
-		if(current<shoulderTarget-100){
+		if(current<shoulderTarget-50){
 
 			if(shoulderRate<5){
 				motor[Shoulder] = 50;
 			}
 			else motor[Shoulder] = 40;
 		}
-		else if(current>shoulderTarget+100){
+					else if(current>shoulderTarget+100){
 			if(shoulderRate>-20&&current>650){
 				motor[Shoulder]-=5;
 			}
@@ -167,7 +166,7 @@ task main(){
 
 
 	//servo[Bro] = 5000;
-	waitForStart();   // wait for start of tele-op phase
+	//waitForStart();   // wait for start of tele-op phase
 	//servo[armRelease] = 0;
 
 	//servo[binlift] = 30;
