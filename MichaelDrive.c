@@ -34,10 +34,14 @@ task drive(){
 	 	if(abs(x2)<12)x2=0;
 	 	if(abs(y2)<12)y2=0;
 	 	//Scale down the controller to keep controllers in drivers hands
-		x1*=.787;
-		x2*=.787;
-		y1*=.787;
-		y2*=.787;
+	 	float scale = .787;
+	 	if(joy1Btn(05)){
+			scale=1;
+		}
+		x1*=scale;
+		x2*=scale;
+		y1*=scale;
+		y2*=scale;
 	  int LF = 0; //Left-front
 	  int RF = 0; //Right-front
 	  int LR = 0; //Left-rear
@@ -92,8 +96,8 @@ task shoulderControl(){
 		}
 		if(current<shoulderTarget-50){
 
-			if(shoulderRate<5){
-				motor[Shoulder] = 50;
+			if(shoulderRate<30){
+				motor[Shoulder] = 80;
 			}
 			else motor[Shoulder] = 40;
 		}
