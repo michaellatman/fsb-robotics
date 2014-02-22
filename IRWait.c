@@ -188,6 +188,11 @@ task main ()
 	checkAndYell();
   // show the user what to do
   //waitForStart();
+
+	//wait10Msec(1000);
+	YMOVE(100,500);
+	XMOVE(100,1000);
+	wait10Msec(10);
   StartTask(Seek);
   while(true)
   {
